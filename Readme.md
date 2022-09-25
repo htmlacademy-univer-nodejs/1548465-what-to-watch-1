@@ -1,7 +1,7 @@
 # Личный проект «Что посмотреть»
 
 * Студент: [Гриша Айдарцян](https://up.htmlacademy.ru/univer-nodejs-urfu/1/user/1548465).
-* Наставник: `Неизвестно`.
+* Наставник: [Глеб Клецков](https://htmlacademy.ru/profile/id1487865).
 
 ---
 
