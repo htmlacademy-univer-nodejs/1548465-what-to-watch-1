@@ -34,6 +34,8 @@
     "npm": "8.1.0"
   },
   "dependencies": {
+    "@types/convict": "6.1.1",
+    "@types/convict-format-with-validator": "6.0.2",
     "chalk": "5.2.0",
     "convict": "6.2.3",
     "convict-format-with-validator": "6.2.0",
