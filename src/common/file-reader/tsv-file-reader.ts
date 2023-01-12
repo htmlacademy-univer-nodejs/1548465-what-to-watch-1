@@ -1,43 +1,34 @@
 import {FileReaderInterface} from './file-reader.interface.js';
-import {readFileSync} from 'fs';
-import {Movie} from '../../types/movie.type.js';
-import {Genre} from '../../types/genre-type.enum.js';
+import EventEmitter from 'events';
+import {createReadStream} from 'fs';
 
-export default class TsvFileReader implements FileReaderInterface{
-  private rawData = '';
+export default class TsvFileReader extends EventEmitter implements FileReaderInterface{
   constructor(public filename : string) {
+    super();
   }
 
-  public read(): void {
-    this.rawData = readFileSync(this.filename, {encoding: 'utf-8'});
-  }
+  public async read(): Promise<void> {
+    const stream = createReadStream(this.filename, {
+      highWaterMark: 16384,
+      encoding: 'utf-8',
+    });
 
-  public toArray(): Movie[] {
-    if(!this.rawData) {
-      return [];
+    let lineRead = '';
+    let endLinePosition = -1;
+    let importedRowCount = 0;
+
+    for await (const chunk of stream) {
+      lineRead += chunk.toString();
+
+      while ((endLinePosition = lineRead.indexOf('\n')) >= 0) {
+        const completeRow = lineRead.slice(0, endLinePosition + 1);
+        lineRead = lineRead.slice(++endLinePosition);
+        importedRowCount++;
+
+        this.emit('line', completeRow);
+      }
     }
-    return this.rawData
-      .split('\n')
-      .filter((row) => row.trim() !== '')
-      .map((line) => line.split('\t'))
-      .map(([title, description, publicationDate, genre, releaseYear, rating, preview, video, actors, director, durationInMinutes, commentsCount, name, email, avatarImage, password, poster, backgroundImage, backgroundColor]) => ({
-        title,
-        description,
-        publicationDate: new Date(publicationDate),
-        genre: <Genre>genre,
-        releaseYear: Number(releaseYear),
-        rating: Number(rating),
-        preview,
-        video,
-        actors: String(actors).split(';'),
-        director,
-        durationInMinutes: Number(durationInMinutes),
-        commentsCount: Number(commentsCount),
-        user: {name, email, avatarImage, password},
-        poster,
-        backgroundColor,
-        backgroundImage
-      }));
-  }
 
+    this.emit('end', importedRowCount);
+  }
 }
