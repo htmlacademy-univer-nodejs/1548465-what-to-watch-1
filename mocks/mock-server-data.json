@@ -24,14 +24,6 @@
       "02.01.2019",
       "01.01.2018"
     ],
-    "genres": [
-      "drama",
-      "drama",
-      "drama",
-      "drama",
-      "drama",
-      "comedy"
-    ],
     "releaseYears": [
       "1999",
       "1993",
@@ -135,7 +127,7 @@
       "6666"
     ],
     "posters": [
-      "green.jpg",
+      "green-mile.jpg",
       "shindler.jpg",
       "redemption.jpg",
       "gump.jpg",

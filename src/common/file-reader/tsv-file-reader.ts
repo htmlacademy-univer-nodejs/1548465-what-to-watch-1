@@ -35,8 +35,8 @@ export default class TsvFileReader implements FileReaderInterface{
         commentsCount: Number(commentsCount),
         user: {name, email, avatarImage, password},
         poster,
-        backgroundColor,
-        backgroundImage
+        backgroundImage,
+        backgroundColor
       }));
   }
 
