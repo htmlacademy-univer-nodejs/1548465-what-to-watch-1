@@ -35,7 +35,10 @@
   },
   "dependencies": {
     "chalk": "5.2.0",
+    "convict": "6.2.3",
+    "convict-format-with-validator": "6.2.0",
     "dayjs": "1.11.7",
+    "dotenv": "16.0.3",
     "got": "12.5.3",
     "json-server": "0.17.1",
     "pino": "8.7.0",
