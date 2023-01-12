@@ -1,13 +1,19 @@
 import {MovieGeneratorInterface} from './movie-generator.interface.js';
 import {MockData} from '../../types/mock-data.type.js';
-import {getRandomItem, getRandomItems} from '../../utils/random.js';
+import {generateRandomValue, getRandomItem, getRandomItems} from '../../utils/random.js';
+import dayjs from 'dayjs';
 
-export class MovieGenerator implements MovieGeneratorInterface{
-  constructor(private readonly mockData: MockData) {}
+const FIRST_WEEK_DAY = 1;
+const LAST_WEEK_DAY = 7;
+
+export class MovieGenerator implements MovieGeneratorInterface {
+  constructor(private readonly mockData: MockData) {
+  }
+
   public generate(): string {
     const title = getRandomItem<string>(this.mockData.titles);
     const description = getRandomItem<string>(this.mockData.descriptions);
-    const publicationDate = getRandomItem<string>(this.mockData.publicationDates);
+    const publicationDate = dayjs().subtract(generateRandomValue(FIRST_WEEK_DAY, LAST_WEEK_DAY), 'day').toISOString();
     const genre = getRandomItem<string>(this.mockData.genres);
     const releaseYear = getRandomItem<string>(this.mockData.releaseYears);
     const rating = getRandomItem<number>(this.mockData.ratings);
@@ -27,7 +33,7 @@ export class MovieGenerator implements MovieGeneratorInterface{
 
     const [firstname, lastName] = user.split(' ');
 
-    return  [
+    return [
       title,
       description,
       publicationDate,
