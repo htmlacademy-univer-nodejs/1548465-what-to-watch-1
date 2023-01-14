@@ -9,7 +9,7 @@ import {Container} from 'inversify';
 import DatabaseService from './common/db-client/database.service.js';
 import {DatabaseInterface} from './common/db-client/database.interface.js';
 import {UserServiceInterface} from './modules/user/user-service.interface.js';
-import UserService from './modules/user/dto/user.service.js';
+import UserService from './modules/user/user.service.js';
 import {types} from '@typegoose/typegoose';
 import {UserEntity, UserModel} from './modules/user/user.entity.js';
 
