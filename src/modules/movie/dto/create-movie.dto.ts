@@ -1,5 +1,4 @@
 import {Genre} from '../../../types/genre-type.enum.js';
-import {User} from '../../../types/user.type.js';
 
 export default class CreateMovieDto {
   title!: string;
@@ -14,7 +13,7 @@ export default class CreateMovieDto {
   director!: string;
   durationInMinutes!: number;
   commentsCount!: number;
-  user!: User;
+  userId!: string;
   poster!: string;
   backgroundImage!: string;
   backgroundColor!: string;
