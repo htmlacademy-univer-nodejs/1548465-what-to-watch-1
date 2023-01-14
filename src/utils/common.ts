@@ -17,7 +17,7 @@ export const createMovie = (row: string) => {
     director,
     durationInMinutes: Number(durationInMinutes),
     commentsCount: Number(commentsCount),
-    user: {name, email, avatarPath: avatarPath, password},
+    user: {name, email, avatarPath, password},
     poster,
     backgroundImage,
     backgroundColor
