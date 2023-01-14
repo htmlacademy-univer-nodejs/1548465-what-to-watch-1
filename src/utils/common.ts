@@ -3,7 +3,7 @@ import {Genre} from '../types/genre-type.enum.js';
 
 export const createMovie = (row: string) => {
   const tokens = row.replace('\n', '').split('\t');
-  const [title, description, publicationDate, genre, releaseYear, rating, preview, video, actors, director, durationInMinutes, commentsCount, name, email, avatarImage, password, poster, backgroundImage, backgroundColor] = tokens;
+  const [title, description, publicationDate, genre, releaseYear, rating, preview, video, actors, director, durationInMinutes, commentsCount, name, email, avatarPath, password, poster, backgroundImage, backgroundColor] = tokens;
   const movie : Movie = {
     title,
     description,
@@ -17,7 +17,7 @@ export const createMovie = (row: string) => {
     director,
     durationInMinutes: Number(durationInMinutes),
     commentsCount: Number(commentsCount),
-    user: {name, email, avatarImage, password},
+    user: {name, email, avatarPath: avatarPath, password},
     poster,
     backgroundImage,
     backgroundColor

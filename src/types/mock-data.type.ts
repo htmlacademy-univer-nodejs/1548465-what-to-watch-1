@@ -13,7 +13,7 @@ export type MockData = {
   commentsCounts: number[];
   users: string[];
   emails: string[];
-  avatarImages: string[];
+  avatarPaths: string[];
   passwords: string[];
   posters: string[];
   backgroundImages: string[];

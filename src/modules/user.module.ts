@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema({
     unique: true,
     match: [/^([\w-\\.]+@([\w-]+\.)+[\w-]{2,4})?$/, 'Email is incorrect'],
   },
-  avatarImage: {
+  avatarPath: {
     type: String,
     required: true,
     minlength: [5, 'Min length for avatar path is 5'],

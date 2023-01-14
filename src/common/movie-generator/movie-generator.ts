@@ -26,7 +26,7 @@ export class MovieGenerator implements MovieGeneratorInterface {
     const commentsCount = getRandomItem<number>(this.mockData.commentsCounts);
     const user = getRandomItem<string>(this.mockData.users);
     const email = getRandomItem<string>(this.mockData.emails);
-    const avatarImage = getRandomItem<string>(this.mockData.avatarImages);
+    const avatarPath = getRandomItem<string>(this.mockData.avatarPaths);
     const password = getRandomItem<string>(this.mockData.passwords);
     const poster = getRandomItem<string>(this.mockData.posters);
     const backgroundImage = getRandomItem<string>(this.mockData.backgroundImages);
@@ -47,7 +47,7 @@ export class MovieGenerator implements MovieGeneratorInterface {
       commentsCount,
       user,
       email,
-      avatarImage,
+      avatarPath,
       password,
       poster,
       backgroundImage,
