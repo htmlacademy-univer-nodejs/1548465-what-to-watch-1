@@ -1,7 +1,5 @@
-import typegoose, {defaultClasses, getModelForClass} from '@typegoose/typegoose';
+import typegoose, {defaultClasses, getModelForClass, Ref} from '@typegoose/typegoose';
 import {Genre} from '../../types/genre-type.enum.js';
-import {Movie} from '../../types/movie.type.js';
-import {User} from '../../types/user.type.js';
 import {UserEntity} from '../user/user.entity.js';
 
 const {prop, modelOptions} = typegoose;
@@ -14,29 +12,7 @@ export interface MovieEntity extends defaultClasses.Base {}
   }
 })
 
-export class MovieEntity extends defaultClasses.TimeStamps implements Movie {
-
-  constructor(data: Movie) {
-    super();
-
-    this.title = data.title;
-    this.description = data.description;
-    this.publicationDate = data.publicationDate;
-    this.genre = data.genre;
-    this.releaseYear = data.releaseYear;
-    this.rating = data.rating;
-    this.preview = data.preview;
-    this.video = data.video;
-    this.actors = data.actors;
-    this.director = data.director;
-    this.durationInMinutes = data.durationInMinutes;
-    this.commentsCount = data.commentsCount;
-    this.user = data.user;
-    this.poster = data.poster;
-    this.backgroundImage = data.backgroundImage;
-    this.backgroundColor = data.backgroundColor;
-  }
-
+export class MovieEntity extends defaultClasses.TimeStamps {
   @prop({trim: true, required: true})
   public title!: string;
 
@@ -80,7 +56,7 @@ export class MovieEntity extends defaultClasses.TimeStamps implements Movie {
     ref: UserEntity,
     required: true
   })
-  public user!: User;
+  public user!: Ref<UserEntity>;
 
   @prop()
   public poster!: string;
