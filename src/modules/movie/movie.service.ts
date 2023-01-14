@@ -21,6 +21,6 @@ export default class MovieService implements MovieServiceInterface {
   }
 
   public findById(movieId: string): Promise<DocumentType<MovieEntity> | null> {
-    return this.movieModel.findById(movieId).exec();
+    return this.movieModel.findById(movieId).populate(['userId']).exec();
   }
 }
