@@ -5,6 +5,7 @@ import CreateMovieDto from './dto/create-movie.dto.js';
 import {LoggerInterface} from '../../common/logger/logger.interface.js';
 import {Component} from '../../types/component.types.js';
 import {inject, injectable} from 'inversify';
+import UpdateMovieDto from './dto/update-movie.dto.js';
 
 @injectable()
 export default class MovieService implements MovieServiceInterface {
@@ -21,6 +22,54 @@ export default class MovieService implements MovieServiceInterface {
   }
 
   public findById(movieId: string): Promise<DocumentType<MovieEntity> | null> {
-    return this.movieModel.findById(movieId).populate(['userId']).exec();
+    return this.movieModel
+      .findById(movieId)
+      .populate(['userId'])
+      .exec();
+  }
+
+  public async find(): Promise<DocumentType<MovieEntity>[]> {
+    return this.movieModel
+      .find()
+      .populate(['userId'])
+      .exec();
+  }
+
+  public async deleteById(movieId: string): Promise<DocumentType<MovieEntity> | null> {
+    return this.movieModel
+      .findByIdAndDelete(movieId)
+      .exec();
+  }
+
+  public async updateById(movieId: string, dto: UpdateMovieDto): Promise<DocumentType<MovieEntity> | null> {
+    return this.movieModel
+      .findByIdAndUpdate(movieId, dto, {new: true})
+      .populate(['userId'])
+      .exec();
+  }
+
+  public async findByGenre(genre: string, limit?: number): Promise<DocumentType<MovieEntity>[]> {
+    return this.movieModel
+      .find({genre: genre}, {}, {limit})
+      .populate(['userId'])
+      .exec();
+  }
+
+  public async exists(documentId: string): Promise<boolean> {
+    return (await this.movieModel
+      .exists({_id: documentId})) !== null;
+  }
+
+  public async incrementCommentsCount(movieId: string): Promise<DocumentType<MovieEntity> | null> {
+    return this.movieModel
+      .findByIdAndUpdate(movieId, {'$inc': {
+        commentCount: 1,
+      }}).exec();
+  }
+
+  public async updateMovieRating(movieId: string, newRating: number): Promise<DocumentType<MovieEntity> | null> {
+    return this.movieModel
+      .findByIdAndUpdate(movieId, {rating: newRating})
+      .exec();
   }
 }
