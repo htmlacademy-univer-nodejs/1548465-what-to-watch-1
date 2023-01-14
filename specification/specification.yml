@@ -115,7 +115,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/createFilm'
+              $ref: '#/components/schemas/createMovie'
         required: true
 
       responses:
@@ -132,7 +132,7 @@ paths:
         "401":
           description: Пользователь не авторизован.
 
-  /movies/{filmId}:
+  /movies/{movieId}:
     get:
       tags:
         - movies
@@ -141,7 +141,7 @@ paths:
 
       parameters:
         - in: path
-          name: filmId
+          name: movieId
           schema:
             type: string
             format: uuid
@@ -173,7 +173,7 @@ paths:
             type: string
             format: Bearer jwt
         - in: path
-          name: filmId
+          name: movieId
           schema:
             type: string
             format: uuid
@@ -185,7 +185,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/updateFilm'
+              $ref: '#/components/schemas/updateMovie'
         required: true
 
       responses:
@@ -222,7 +222,7 @@ paths:
             type: string
             format: Bearer jwt
         - in: path
-          name: filmId
+          name: movieId
           schema:
             type: string
             format: uuid
@@ -361,13 +361,13 @@ paths:
               type: object
 
               properties:
-                filmId:
+                movieId:
                   type: string
                   format: uuid
                   example: 8ddf34525f01410fa3d2e8c2970811bf
 
               required:
-                - filmId
+                - movieId
 
       responses:
         "204":
@@ -377,7 +377,7 @@ paths:
           description: Пользователь не авторизован.
 
 
-  /movies/{filmId}/comments:
+  /movies/{movieId}/comments:
     get:
       tags:
         - comments
@@ -386,7 +386,7 @@ paths:
 
       parameters:
         - in: path
-          name: filmId
+          name: movieId
           schema:
             type: string
             format: uuid
@@ -431,12 +431,12 @@ paths:
                 - $ref: '#/components/schemas/comment'
                 - type: object
                   properties:
-                    filmId:
+                    movieId:
                       type: string
                       format: uuid
                       example: 8ddf34525f01410fa3d2e8c2970811bf
                   required:
-                    - filmId
+                    - movieId
 
       responses:
         "200":
@@ -499,7 +499,7 @@ components:
           example: igor@kinopoisk.ru
 
 
-    createFilm:
+    createMovie:
       type: object
 
       properties:
@@ -701,17 +701,17 @@ components:
         - backgroundImagePath
         - backgroundColor
 
-    updateFilm:
+    updateMovie:
       allOf:
-        - $ref: '#/components/schemas/createFilm'
+        - $ref: '#/components/schemas/createMovie'
         - type: object
           properties:
-            filmId:
+            movieId:
               type: string
               format: uuid
               example: 8ddf34525f01410fa3d2e8c2970811bf
           required:
-            - filmId
+            - movieId
 
     deleteMovie:
       type: object
@@ -725,13 +725,13 @@ components:
       type: object
 
       properties:
-        filmId:
+        movieId:
           type: string
           format: uuid
           example: 8ddf34525f01410fa3d2e8c2970811bf
 
       required:
-        - filmId
+        - movieId
 
     movieListItem:
       type: object
