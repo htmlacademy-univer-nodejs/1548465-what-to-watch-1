@@ -87,8 +87,10 @@ export default class MovieService implements MovieServiceInterface {
   }
 
   public async updateMovieRating(movieId: string, newRating: number): Promise<DocumentType<MovieEntity> | null> {
-    return this.movieModel
-      .findByIdAndUpdate(movieId, {rating: newRating})
-      .exec();
+    const movie = await this.findById(movieId);
+    const oldRating = movie?.rating ?? 0;
+    const ratingsCount = movie?.commentsCount ?? 0;
+    const actualRating = (newRating + oldRating * ratingsCount) / (ratingsCount + 1);
+    return this.updateById(movieId, {rating: actualRating});
   }
 }
