@@ -95,7 +95,7 @@ paths:
         "401":
           description: Пользователь не авторизован. Невалидный токен.
 
-  /movies/create:
+  /movies:
     post:
       tags:
         - movies
