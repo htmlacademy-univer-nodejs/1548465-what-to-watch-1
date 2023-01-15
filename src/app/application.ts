@@ -40,6 +40,7 @@ export default class Application {
       this.config.get('DB_NAME'),
     );
 
+    this.initMiddleware();
     this.registerRoutes();
     this.expressApp.listen(this.config.get('PORT'));
     this.logger.info(`Server started on http://localhost:${this.config.get('PORT')}`);

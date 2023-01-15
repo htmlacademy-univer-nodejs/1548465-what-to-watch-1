@@ -9,3 +9,33 @@ GET http://localhost:4001/movies HTTP/1.1
 Content-Type: application/json
 
 ###
+
+## Создать новую категорию
+
+POST http://localhost:4001/movies HTTP/1.1
+Content-Type: application/json
+
+{
+  "title": "Lion King",
+  "description": "У величественного Короля-Льва Муфасы рождается наследник по имени Симба. Уже в детстве любознательный малыш становится жертвой интриг своего завистливого дяди Шрама, мечтающего о власти.",
+  "publicationDate": "2023-01-01T00:00:00.000Z",
+  "genre": "comedy",
+  "releaseYear": 1994,
+  "rating": 7,
+  "previewPath": "https://www.what-to-watch.ru/lion_king_preview",
+  "moviePath": "https://www.what-to-watch.ru/lion_king",
+  "actors": [
+    "Мэттью Бродерик",
+    "Джереми Айронс",
+    "Нэйтан Лейн"
+  ],
+  "director": "Роджер Аллерс",
+  "durationInMinutes": 120,
+  "commentsCount": 15,
+  "userId": "63c354de4f4c721b2ba68f32",
+  "posterPath": "lion_king_poster.jpg",
+  "backgroundImagePath": "lion_king_background_image.jpg",
+  "backgroundColor": "black"
+}
+
+###
