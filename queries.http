@@ -40,9 +40,15 @@ Content-Type: application/json
 
 ###
 
-## Фильм по идентификатору
+## Получить фильм по идентификатору
 
 GET http://localhost:4001/movies/63c4761ebc8097422d358309 HTTP/1.1
+
+###
+
+## Удалить фильм по идентификатору
+
+DELETE http://localhost:4001/movies/63c4761ebc8097422d358311 HTTP/1.1
 
 ###
 
