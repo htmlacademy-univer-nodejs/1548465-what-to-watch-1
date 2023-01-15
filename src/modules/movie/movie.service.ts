@@ -6,7 +6,6 @@ import {LoggerInterface} from '../../common/logger/logger.interface.js';
 import {Component} from '../../types/component.types.js';
 import {inject, injectable} from 'inversify';
 import UpdateMovieDto from './dto/update-movie.dto.js';
-import {MAX_MOVIES_COUNT} from './movie.constants.js';
 
 @injectable()
 export default class MovieService implements MovieServiceInterface {
@@ -29,28 +28,10 @@ export default class MovieService implements MovieServiceInterface {
   }
 
   public async find(): Promise<DocumentType<MovieEntity>[]> {
-    return this.movieModel.aggregate([
-      {
-        $lookup: {
-          from: 'comments',
-          let: {movieId: '$_id'},
-          pipeline: [
-            {$match: {$expr: {$in: ['$$movieId', '$movies']}}},
-            {$project: {_id: 1}}
-          ],
-          as: 'comments'
-        },
-      },
-      {
-        $addFields: {
-          id: {$toString: '$_id'},
-          commentsCount: {$size: '$comments'},
-          rating: {$avg: '$comments.rating'}
-        }
-      },
-      {$unset: 'comments'},
-      {$limit: MAX_MOVIES_COUNT}
-    ]);
+    return this.movieModel
+      .find()
+      .populate(['userId'])
+      .exec();
   }
 
   public async deleteById(movieId: string): Promise<DocumentType<MovieEntity> | null> {

@@ -31,10 +31,9 @@ export default class MovieController extends Controller {
     this.addRoute({path: '/:movieId', method: HttpMethod.Get, handler: this.show});
   }
 
-  public async index(_req: Request, res: Response): Promise<void> {
+  public async index(_req: Request, res: Response) {
     const movies = await this.movieService.find();
-    const movieResponse = fillDTO(MovieResponse, movies);
-    this.ok(res, movieResponse);
+    this.ok(res, fillDTO(MovieResponse, movies));
   }
 
   public async create(
