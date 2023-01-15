@@ -12,6 +12,8 @@ import HttpError from '../../common/errors/http-error.js';
 import {StatusCodes} from 'http-status-codes';
 import * as core from 'express-serve-static-core';
 import UpdateMovieDto from './dto/update-movie.dto.js';
+import {RequestQuery} from '../../types/request-query.js';
+
 
 type ParamsGetMovie = {
   movieId: string;
@@ -27,15 +29,15 @@ export default class MovieController extends Controller {
 
     this.logger.info('Register routes for MovieController...');
 
-    this.addRoute({path: '/', method: HttpMethod.Get, handler: this.index});
+    this.addRoute({path: '/:limit', method: HttpMethod.Get, handler: this.index});
     this.addRoute({path: '/', method: HttpMethod.Post, handler: this.create});
     this.addRoute({path: '/:movieId', method: HttpMethod.Get, handler: this.show});
     this.addRoute({path: '/:movieId', method: HttpMethod.Delete, handler: this.delete});
     this.addRoute({path: '/:movieId', method: HttpMethod.Patch, handler: this.update});
   }
 
-  public async index(_req: Request, res: Response) {
-    const movies = await this.movieService.find();
+  public async index({query}: Request<core.ParamsDictionary | ParamsGetMovie, unknown, unknown, RequestQuery>, res: Response) {
+    const movies = await this.movieService.find(query.limit);
     this.ok(res, fillDTO(MovieResponse, movies));
   }
 

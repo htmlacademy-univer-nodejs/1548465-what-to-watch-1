@@ -6,7 +6,7 @@ import UpdateMovieDto from './dto/update-movie.dto.js';
 
 export interface MovieServiceInterface {
   create(dto: CreateMovieDto): Promise<DocumentType<MovieEntity>>;
-  find(): Promise<DocumentType<MovieEntity>[]>;
+  find(limit?: number): Promise<DocumentType<MovieEntity>[]>;
   findById(movieId: string): Promise<DocumentType<MovieEntity> | null>;
   deleteById(movieId: string): Promise<DocumentType<MovieEntity> | null>;
   updateById(movieId: string, dto: UpdateMovieDto): Promise<DocumentType<MovieEntity> | null>;
