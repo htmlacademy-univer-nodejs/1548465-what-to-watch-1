@@ -18,7 +18,7 @@ export const configSchema = convict<ConfigSchema>({
     doc: 'Port for incoming connections',
     format: 'port',
     env: 'PORT',
-    default: 4000
+    default: 4001
   },
   SALT: {
     doc: 'Salt for password hash',
@@ -49,7 +49,7 @@ export const configSchema = convict<ConfigSchema>({
     doc: 'Port to connect to the database (MongoDB)',
     format: 'port',
     env: 'DB_PORT',
-    default: 27017,
+    default: 27018,
   },
   DB_NAME: {
     doc: 'Database name (MongoDB)',

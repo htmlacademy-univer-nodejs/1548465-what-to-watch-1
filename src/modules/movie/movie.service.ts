@@ -18,7 +18,6 @@ export default class MovieService implements MovieServiceInterface {
   public async create(dto: CreateMovieDto): Promise<DocumentType<MovieEntity>> {
     const result = await this.movieModel.create(dto);
     this.logger.info(`New movie created: ${dto.title}`);
-
     return result;
   }
 

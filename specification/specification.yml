@@ -95,7 +95,7 @@ paths:
         "401":
           description: Пользователь не авторизован. Невалидный токен.
 
-  /movies/create:
+  /movies:
     post:
       tags:
         - movies
@@ -364,7 +364,7 @@ paths:
                 movieId:
                   type: string
                   format: uuid
-                  example: 8ddf34525f01410fa3d2e8c2970811bf
+                  example: 63c354de4f4c721b2ba68f32
 
               required:
                 - movieId
@@ -434,7 +434,7 @@ paths:
                     movieId:
                       type: string
                       format: uuid
-                      example: 8ddf34525f01410fa3d2e8c2970811bf
+                      example: 63c354de4f4c721b2ba68f32
                   required:
                     - movieId
 
@@ -492,7 +492,7 @@ components:
         id:
           type: string
           format: uuid
-          example: 8ddf34525f01410fa3d2e8c2970811bf
+          example: 63c354de4f4c721b2ba68f32
 
         email:
           type: string
@@ -560,7 +560,7 @@ components:
         userId:
           type: string
           format: uuid
-          example: 8ddf34525f01410fa3d2e8c2970811bf
+          example: 63c354de4f4c721b2ba68f32
 
         poster:
           type: string
@@ -709,7 +709,7 @@ components:
             movieId:
               type: string
               format: uuid
-              example: 8ddf34525f01410fa3d2e8c2970811bf
+              example: 63c354de4f4c721b2ba68f32
           required:
             - movieId
 
@@ -728,7 +728,7 @@ components:
         movieId:
           type: string
           format: uuid
-          example: 8ddf34525f01410fa3d2e8c2970811bf
+          example: 63c354de4f4c721b2ba68f32
 
       required:
         - movieId
