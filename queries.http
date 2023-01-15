@@ -111,3 +111,8 @@ Content-Type: application/json
 }
 
 ###
+
+## Список комментариев к фильму
+GET http://localhost:4001/movies/63c4820a319cb08e2545cf36/comments HTTP/1.1
+
+###

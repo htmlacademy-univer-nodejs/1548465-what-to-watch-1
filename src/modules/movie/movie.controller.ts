@@ -13,6 +13,8 @@ import {StatusCodes} from 'http-status-codes';
 import * as core from 'express-serve-static-core';
 import UpdateMovieDto from './dto/update-movie.dto.js';
 import {RequestQuery} from '../../types/request-query.js';
+import CommentResponse from '../comment/response/comment.response.js';
+import {CommentServiceInterface} from '../comment/comment-service.interface.js';
 
 
 type ParamsGetMovie = {
@@ -24,6 +26,7 @@ export default class MovieController extends Controller {
   constructor(
     @inject(Component.LoggerInterface) logger: LoggerInterface,
     @inject(Component.MovieServiceInterface) private readonly movieService: MovieServiceInterface,
+    @inject(Component.CommentServiceInterface) private readonly commentService: CommentServiceInterface
   ) {
     super(logger);
 
@@ -35,6 +38,7 @@ export default class MovieController extends Controller {
     this.addRoute({path: '/:movieId', method: HttpMethod.Delete, handler: this.delete});
     this.addRoute({path: '/:movieId', method: HttpMethod.Patch, handler: this.update});
     //this.addRoute({path: '/:limit?&:genre?', method: HttpMethod.Get, handler: this.getMoviesByGenre});
+    this.addRoute({path: '/:movieId/comments', method: HttpMethod.Get, handler: this.getComments});
   }
 
   public async index(_req: Request, res: Response) {
@@ -110,5 +114,21 @@ export default class MovieController extends Controller {
   ):Promise<void> {
     const movies = await this.movieService.findByGenre(query.genre, query.limit);
     this.ok(res, fillDTO(MovieResponse, movies));
+  }
+
+  public async getComments(
+    {params}: Request<core.ParamsDictionary | ParamsGetMovie, object, object>,
+    res: Response
+  ): Promise<void> {
+    if (!await this.movieService.exists(params.movieId)) {
+      throw new HttpError(
+        StatusCodes.NOT_FOUND,
+        `Movie with id ${params.movieId} not found.`,
+        'MovieController'
+      );
+    }
+
+    const comments = await this.commentService.findByMovieId(params.movieId);
+    this.ok(res, fillDTO(CommentResponse, comments));
   }
 }
