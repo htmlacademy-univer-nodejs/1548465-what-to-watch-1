@@ -32,11 +32,17 @@ Content-Type: application/json
   "director": "Роджер Аллерс",
   "durationInMinutes": 120,
   "commentsCount": 15,
-  "userId": "63c354de4f4c721b2ba68f32",
+  "userId": "63c3de73aa6f54a1ef917034",
   "posterPath": "lion_king_poster.jpg",
   "backgroundImagePath": "lion_king_background_image.jpg",
   "backgroundColor": "black"
 }
+
+###
+
+## Фильм по идентификатору
+
+GET http://localhost:4001/movies/63c4761ebc8097422d358309 HTTP/1.1
 
 ###
 

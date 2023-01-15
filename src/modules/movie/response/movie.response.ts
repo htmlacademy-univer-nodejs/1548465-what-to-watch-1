@@ -1,7 +1,11 @@
-import {Expose} from 'class-transformer';
+import {Expose, Type} from 'class-transformer';
 import {Genre} from '../../../types/genre-type.enum.js';
+import UserResponse from '../../user/response/user.response.js';
 
 export class MovieResponse {
+  @Expose()
+  public id!: string;
+
   @Expose()
   public title!: string;
 
@@ -38,8 +42,9 @@ export class MovieResponse {
   @Expose()
   public commentsCount!: number;
 
-  @Expose()
-  public userId!: string;
+  @Expose({name: 'userId'})
+  @Type(() => UserResponse)
+  public user!: UserResponse;
 
   @Expose()
   public poster!: string;

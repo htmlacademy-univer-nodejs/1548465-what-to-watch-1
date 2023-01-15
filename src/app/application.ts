@@ -23,7 +23,7 @@ export default class Application {
     this.expressApp = express();
   }
 
-  public registerRoutes() {
+  public initRoutes() {
     this.expressApp.use('/movies', this.movieController.router);
     this.expressApp.use('/users', this.userController.router);
   }
@@ -49,7 +49,7 @@ export default class Application {
     );
 
     this.initMiddleware();
-    this.registerRoutes();
+    this.initRoutes();
     this.initExceptionFilters();
     this.expressApp.listen(this.config.get('PORT'));
     this.logger.info(`Server started on http://localhost:${this.config.get('PORT')}`);
