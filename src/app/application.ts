@@ -18,12 +18,14 @@ export default class Application {
     @inject(Component.DatabaseInterface) private databaseClient: DatabaseInterface,
     @inject(Component.MovieController) private movieController: ControllerInterface,
     @inject(Component.ExceptionFilterInterface) private exceptionFilter: ExceptionFilterInterface,
+    @inject(Component.UserController) private userController: ControllerInterface,
   ) {
     this.expressApp = express();
   }
 
   public registerRoutes() {
     this.expressApp.use('/movies', this.movieController.router);
+    this.expressApp.use('/users', this.userController.router);
   }
 
   public initMiddleware() {
