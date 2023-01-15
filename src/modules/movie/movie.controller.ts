@@ -11,6 +11,7 @@ import CreateMovieDto from './dto/create-movie.dto.js';
 import HttpError from '../../common/errors/http-error.js';
 import {StatusCodes} from 'http-status-codes';
 import * as core from 'express-serve-static-core';
+import UpdateMovieDto from './dto/update-movie.dto.js';
 
 type ParamsGetMovie = {
   movieId: string;
@@ -30,6 +31,7 @@ export default class MovieController extends Controller {
     this.addRoute({path: '/', method: HttpMethod.Post, handler: this.create});
     this.addRoute({path: '/:movieId', method: HttpMethod.Get, handler: this.show});
     this.addRoute({path: '/:movieId', method: HttpMethod.Delete, handler: this.delete});
+    this.addRoute({path: '/:movieId', method: HttpMethod.Patch, handler: this.update});
   }
 
   public async index(_req: Request, res: Response) {
@@ -80,5 +82,22 @@ export default class MovieController extends Controller {
     }
 
     this.noContent(res, movie);
+  }
+
+  public async update(
+    {body, params}: Request<core.ParamsDictionary | ParamsGetMovie, Record<string, unknown>, UpdateMovieDto>,
+    res: Response
+  ): Promise<void> {
+    const updateMovie = await this.movieService.updateById(params.movieId, body);
+
+    if (!updateMovie) {
+      throw new HttpError(
+        StatusCodes.NOT_FOUND,
+        `Movie with id ${params.movieId} not found.`,
+        'MovieController'
+      );
+    }
+
+    this.ok(res, fillDTO(MovieResponse, updateMovie));
   }
 }
