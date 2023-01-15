@@ -34,11 +34,11 @@ export default class MovieController extends Controller {
     this.addRoute({path: '/:movieId', method: HttpMethod.Get, handler: this.show});
     this.addRoute({path: '/:movieId', method: HttpMethod.Delete, handler: this.delete});
     this.addRoute({path: '/:movieId', method: HttpMethod.Patch, handler: this.update});
-    this.addRoute({path: '/:limit&:genre', method: HttpMethod.Patch, handler: this.update});
+    //this.addRoute({path: '/:limit?&:genre?', method: HttpMethod.Get, handler: this.getMoviesByGenre});
   }
 
-  public async index({query}: Request<core.ParamsDictionary | ParamsGetMovie, unknown, unknown, RequestQuery>, res: Response) {
-    const movies = await this.movieService.find(query.limit);
+  public async index(_req: Request, res: Response) {
+    const movies = await this.movieService.find();
     this.ok(res, fillDTO(MovieResponse, movies));
   }
 
@@ -102,5 +102,13 @@ export default class MovieController extends Controller {
     }
 
     this.ok(res, fillDTO(MovieResponse, updateMovie));
+  }
+
+  public async getMoviesByGenre(
+    {query}: Request<core.ParamsDictionary, unknown, unknown, RequestQuery>,
+    res: Response
+  ):Promise<void> {
+    const movies = await this.movieService.findByGenre(query.genre, query.limit);
+    this.ok(res, fillDTO(MovieResponse, movies));
   }
 }
