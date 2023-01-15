@@ -7,6 +7,7 @@ import {HttpMethod} from '../../types/http-method.enum.js';
 import {MovieServiceInterface} from './movie-service.interface.js';
 import {fillDTO} from '../../utils/common.js';
 import {MovieResponse} from './response/movie.response.js';
+import CreateMovieDto from './dto/create-movie.dto.js';
 
 @injectable()
 export default class MovieController extends Controller {
@@ -28,7 +29,11 @@ export default class MovieController extends Controller {
     this.ok(res, movieResponse);
   }
 
-  public create(_req: Request, _res: Response): void {
-    // Код обработчика
+  public async create(
+    {body}: Request<Record<string, unknown>, Record<string, unknown>, CreateMovieDto>,
+    res: Response): Promise<void> {
+
+    const movie = await this.movieService.create(body);
+    this.created(res, fillDTO(MovieResponse, movie));
   }
 }
