@@ -5,6 +5,8 @@ import {Component} from '../../types/component.types.js';
 import {LoggerInterface} from '../../common/logger/logger.interface.js';
 import {HttpMethod} from '../../types/http-method.enum.js';
 import {MovieServiceInterface} from './movie-service.interface.js';
+import {fillDTO} from '../../utils/common.js';
+import {MovieResponse} from './response/movie.response.js';
 
 @injectable()
 export default class MovieController extends Controller {
@@ -21,8 +23,9 @@ export default class MovieController extends Controller {
   }
 
   public async index(_req: Request, res: Response): Promise<void> {
-    const categories = await this.movieService.find();
-    this.ok(res, categories);
+    const movies = await this.movieService.find();
+    const movieResponse = fillDTO(MovieResponse, movies);
+    this.ok(res, movieResponse);
   }
 
   public create(_req: Request, _res: Response): void {
