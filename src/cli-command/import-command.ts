@@ -14,7 +14,7 @@ import {UserModel} from '../modules/user/user.entity.js';
 import DatabaseService from '../common/db-client/database.service.js';
 import {getURI} from '../utils/db.js';
 
-const DEFAULT_DB_PORT = 27018;
+const DEFAULT_DB_PORT = 27017;
 const DEFAULT_USER_PASSWORD = '123456';
 
 export default class ImportCommand implements CliCommandInterface {

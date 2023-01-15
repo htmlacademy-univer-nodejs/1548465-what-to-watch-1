@@ -8,4 +8,4 @@ export const getRandomItems = <T>(items: T[]) => {
 };
 
 export const getRandomItem = <T>(items: T[]) =>
-  items[generateRandomValue(0, items.length)];
+  items[generateRandomValue(0, items.length - 1)];
