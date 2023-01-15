@@ -29,11 +29,12 @@ export default class MovieController extends Controller {
 
     this.logger.info('Register routes for MovieController...');
 
-    this.addRoute({path: '/:limit', method: HttpMethod.Get, handler: this.index});
+    this.addRoute({path: '/:limit?', method: HttpMethod.Get, handler: this.index});
     this.addRoute({path: '/', method: HttpMethod.Post, handler: this.create});
     this.addRoute({path: '/:movieId', method: HttpMethod.Get, handler: this.show});
     this.addRoute({path: '/:movieId', method: HttpMethod.Delete, handler: this.delete});
     this.addRoute({path: '/:movieId', method: HttpMethod.Patch, handler: this.update});
+    this.addRoute({path: '/:limit&:genre', method: HttpMethod.Patch, handler: this.update});
   }
 
   public async index({query}: Request<core.ParamsDictionary | ParamsGetMovie, unknown, unknown, RequestQuery>, res: Response) {

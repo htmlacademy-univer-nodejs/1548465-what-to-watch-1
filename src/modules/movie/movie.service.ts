@@ -31,7 +31,7 @@ export default class MovieService implements MovieServiceInterface {
   public async find(limit?: number): Promise<DocumentType<MovieEntity>[]> {
     const movieListCount = limit ?? MAX_MOVIES_COUNT;
     return this.movieModel
-      .find({}, {limit: movieListCount})
+      .find({}, {},{limit: movieListCount})
       .populate(['userId'])
       .exec();
   }
