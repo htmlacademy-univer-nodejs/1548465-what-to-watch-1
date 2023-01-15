@@ -6,6 +6,7 @@ import {LoggerInterface} from '../../common/logger/logger.interface.js';
 import {Component} from '../../types/component.types.js';
 import {inject, injectable} from 'inversify';
 import UpdateMovieDto from './dto/update-movie.dto.js';
+import {MAX_MOVIES_COUNT} from './movie.constants.js';
 
 @injectable()
 export default class MovieService implements MovieServiceInterface {
@@ -27,9 +28,10 @@ export default class MovieService implements MovieServiceInterface {
       .exec();
   }
 
-  public async find(): Promise<DocumentType<MovieEntity>[]> {
+  public async find(limit?: number): Promise<DocumentType<MovieEntity>[]> {
+    const movieListCount = limit ?? MAX_MOVIES_COUNT;
     return this.movieModel
-      .find()
+      .find({}, {limit: movieListCount})
       .populate(['userId'])
       .exec();
   }
