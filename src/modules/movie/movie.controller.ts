@@ -29,6 +29,7 @@ export default class MovieController extends Controller {
     this.addRoute({path: '/', method: HttpMethod.Get, handler: this.index});
     this.addRoute({path: '/', method: HttpMethod.Post, handler: this.create});
     this.addRoute({path: '/:movieId', method: HttpMethod.Get, handler: this.show});
+    this.addRoute({path: '/:movieId', method: HttpMethod.Delete, handler: this.delete});
   }
 
   public async index(_req: Request, res: Response) {
@@ -61,5 +62,23 @@ export default class MovieController extends Controller {
     }
 
     this.ok(res, fillDTO(MovieResponse, movie));
+  }
+
+  public async delete(
+    {params}: Request<core.ParamsDictionary | ParamsGetMovie>,
+    res: Response
+  ): Promise<void> {
+    const {movieId} = params;
+    const movie = await this.movieService.deleteById(movieId);
+
+    if (!movie) {
+      throw new HttpError(
+        StatusCodes.NOT_FOUND,
+        `Movie with id ${movieId} not found.`,
+        'MovieController'
+      );
+    }
+
+    this.noContent(res, movie);
   }
 }
