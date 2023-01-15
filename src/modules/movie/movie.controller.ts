@@ -40,7 +40,8 @@ export default class MovieController extends Controller {
     {body}: Request<Record<string, unknown>, Record<string, unknown>, CreateMovieDto>,
     res: Response): Promise<void> {
 
-    const movie = await this.movieService.create(body);
+    const result = await this.movieService.create(body);
+    const movie = await this.movieService.findById(result.id);
     this.created(res, fillDTO(MovieResponse, movie));
   }
 
