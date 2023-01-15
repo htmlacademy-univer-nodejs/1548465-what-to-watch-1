@@ -24,6 +24,10 @@ export default class Application {
     this.expressApp.use('/movies', this.movieController.router);
   }
 
+  public initMiddleware() {
+    this.expressApp.use(express.json());
+  }
+
   public async init() {
     this.logger.info('Application initialization...');
     this.logger.info(`Get value from env $PORT: ${this.config.get('PORT')}`);
