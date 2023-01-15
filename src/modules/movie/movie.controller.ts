@@ -34,6 +34,7 @@ export default class MovieController extends Controller {
     res: Response): Promise<void> {
 
     const movie = await this.movieService.create(body);
+    this.logger.info(`Created new movie with title ${body.title}`);
     this.created(res, fillDTO(MovieResponse, movie));
   }
 }
