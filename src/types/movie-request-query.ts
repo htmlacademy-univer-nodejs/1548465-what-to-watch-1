@@ -1,4 +1,4 @@
-import {Genre} from './genre-type.enum.js';
+import {Genre} from './enums/genre-type.enum.js';
 
 export type MovieRequestQuery = {
   limit?: number;

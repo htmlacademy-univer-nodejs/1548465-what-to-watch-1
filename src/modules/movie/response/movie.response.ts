@@ -1,5 +1,5 @@
 import {Expose, Type} from 'class-transformer';
-import {Genre} from '../../../types/genre-type.enum.js';
+import {Genre} from '../../../types/enums/genre-type.enum.js';
 import UserResponse from '../../user/response/user.response.js';
 
 export class MovieResponse {

@@ -17,7 +17,7 @@
     "clean": "rimraf dist",
     "ts": "ts-node",
     "mock:server": "json-server ./mocks/mock-server-data.json --port 3123",
-    "cli": "npm run ts ./src/cli.ts --"
+    "cli": "npm run ts ./src/cli.ts"
   },
   "devDependencies": {
     "@types/mime-types": "^2.1.1",

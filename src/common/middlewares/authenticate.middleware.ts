@@ -1,6 +1,6 @@
 import {NextFunction, Request, Response} from 'express';
 import * as jose from 'jose';
-import {MiddlewareInterface} from '../../types/middleware.interface.js';
+import {MiddlewareInterface} from '../../types/interfaces/middleware.interface.js';
 import HttpError from '../errors/http-error.js';
 import {StatusCodes} from 'http-status-codes';
 // eslint-disable-next-line node/prefer-global/text-encoder

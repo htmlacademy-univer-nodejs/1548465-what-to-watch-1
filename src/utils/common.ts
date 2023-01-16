@@ -1,6 +1,6 @@
 import crypto from 'crypto';
-import {Movie} from '../types/movie.type.js';
-import {Genre} from '../types/genre-type.enum.js';
+import {Movie} from '../types/entities/movie.type.js';
+import {Genre} from '../types/enums/genre-type.enum.js';
 import {ClassConstructor, plainToInstance} from 'class-transformer';
 import * as jose from 'jose';
 // eslint-disable-next-line node/prefer-global/text-encoder

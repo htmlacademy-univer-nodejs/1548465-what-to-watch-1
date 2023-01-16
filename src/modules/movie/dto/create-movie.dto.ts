@@ -1,4 +1,4 @@
-import {Genre} from '../../../types/genre-type.enum.js';
+import {Genre} from '../../../types/enums/genre-type.enum.js';
 import {
   IsArray,
   IsDateString,

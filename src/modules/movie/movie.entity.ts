@@ -1,5 +1,5 @@
 import typegoose, {defaultClasses, getModelForClass, Ref} from '@typegoose/typegoose';
-import {Genre} from '../../types/genre-type.enum.js';
+import {Genre} from '../../types/enums/genre-type.enum.js';
 import {UserEntity} from '../user/user.entity.js';
 
 const {prop, modelOptions} = typegoose;

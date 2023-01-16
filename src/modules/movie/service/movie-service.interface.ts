@@ -1,8 +1,8 @@
 import {DocumentType} from '@typegoose/typegoose';
-import CreateMovieDto from './dto/create-movie.dto.js';
-import {MovieEntity} from './movie.entity.js';
-import UpdateMovieDto from './dto/update-movie.dto.js';
-import {DocumentExistsInterface} from '../../types/document-exists.interface.js';
+import CreateMovieDto from '../dto/create-movie.dto.js';
+import {MovieEntity} from '../movie.entity.js';
+import UpdateMovieDto from '../dto/update-movie.dto.js';
+import {DocumentExistsInterface} from '../../../types/interfaces/document-exists.interface.js';
 
 
 export interface MovieServiceInterface extends DocumentExistsInterface {
