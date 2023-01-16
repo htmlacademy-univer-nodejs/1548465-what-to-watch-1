@@ -10,7 +10,7 @@ import {MovieResponse} from './response/movie.response.js';
 import CreateMovieDto from './dto/create-movie.dto.js';
 import * as core from 'express-serve-static-core';
 import UpdateMovieDto from './dto/update-movie.dto.js';
-import {RequestQuery} from '../../types/request-query.js';
+import {MovieRequestQuery} from '../../types/movie-request-query.js';
 import CommentResponse from '../comment/response/comment.response.js';
 import {CommentServiceInterface} from '../comment/comment-service.interface.js';
 import {ValidateObjectIdMiddleware} from '../../common/middlewares/validate-objectid.middleware.js';
@@ -84,7 +84,7 @@ export default class MovieController extends Controller {
     });
   }
 
-  public async index({query}: Request<unknown, unknown, unknown, RequestQuery>, res: Response) : Promise<void>{
+  public async index({query}: Request<unknown, unknown, unknown, MovieRequestQuery>, res: Response) : Promise<void>{
     const movies = query.genre
       ? await this.movieService.findByGenre(query.genre, query.limit)
       : await this.movieService.find(query.limit);
