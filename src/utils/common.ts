@@ -2,6 +2,7 @@ import crypto from 'crypto';
 import {Movie} from '../types/movie.type.js';
 import {Genre} from '../types/genre-type.enum.js';
 import {ClassConstructor, plainToInstance} from 'class-transformer';
+import * as jose from 'jose';
 
 export const createMovie = (row: string) => {
   const tokens = row.replace('\n', '').split('\t');
@@ -43,3 +44,10 @@ export const fillDTO = <T, V>(someDto: ClassConstructor<T>, plainObject: V) =>
 export const createErrorObject = (message: string) => ({
   error: message,
 });
+
+export const createJWT = async (algoritm: string, jwtSecret: string, payload: object): Promise<string> =>
+  new jose.SignJWT({...payload})
+    .setProtectedHeader({ alg: algoritm})
+    .setIssuedAt()
+    .setExpirationTime('2d')
+    .sign(crypto.createSecretKey(jwtSecret, 'utf-8'));
