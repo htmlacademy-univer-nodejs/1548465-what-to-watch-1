@@ -28,29 +28,12 @@ export default class MovieService implements MovieServiceInterface {
       .exec();
   }
 
-  public async find(): Promise<DocumentType<MovieEntity>[]> {
-    return this.movieModel.aggregate([
-      {
-        $lookup: {
-          from: 'comments',
-          let: {movieId: '$_id'},
-          pipeline: [
-            {$match: {$expr: {$in: ['$$movieId', '$movies']}}},
-            {$project: {_id: 1}}
-          ],
-          as: 'comments'
-        },
-      },
-      {
-        $addFields: {
-          id: {$toString: '$_id'},
-          commentsCount: {$size: '$comments'},
-          rating: {$avg: '$comments.rating'}
-        }
-      },
-      {$unset: 'comments'},
-      {$limit: MAX_MOVIES_COUNT}
-    ]);
+  public async find(limit?: number): Promise<DocumentType<MovieEntity>[]> {
+    const movieListCount = limit ?? MAX_MOVIES_COUNT;
+    return this.movieModel
+      .find({}, {},{limit: movieListCount})
+      .populate(['userId'])
+      .exec();
   }
 
   public async deleteById(movieId: string): Promise<DocumentType<MovieEntity> | null> {

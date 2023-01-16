@@ -49,7 +49,7 @@ export const configSchema = convict<ConfigSchema>({
     doc: 'Port to connect to the database (MongoDB)',
     format: 'port',
     env: 'DB_PORT',
-    default: 27018,
+    default: 27017,
   },
   DB_NAME: {
     doc: 'Database name (MongoDB)',
