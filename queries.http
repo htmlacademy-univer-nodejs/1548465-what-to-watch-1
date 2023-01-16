@@ -116,3 +116,15 @@ Content-Type: application/json
 GET http://localhost:4001/movies/63c4820a319cb08e2545cf36/comments HTTP/1.1
 
 ###
+
+## Отправка аватарки пользователю
+
+POST http://localhost:4001/users/63c4820a319cb08e2545cf34/avatar HTTP/1.1
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="avatar"; filename="screen.png"
+Content-Type: image/png
+
+< ./upload/screen.png
+------WebKitFormBoundary7MA4YWxkTrZu0gW--

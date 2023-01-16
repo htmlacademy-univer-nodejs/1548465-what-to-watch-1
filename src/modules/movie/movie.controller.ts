@@ -8,8 +8,6 @@ import {MovieServiceInterface} from './movie-service.interface.js';
 import {fillDTO} from '../../utils/common.js';
 import {MovieResponse} from './response/movie.response.js';
 import CreateMovieDto from './dto/create-movie.dto.js';
-import HttpError from '../../common/errors/http-error.js';
-import {StatusCodes} from 'http-status-codes';
 import * as core from 'express-serve-static-core';
 import UpdateMovieDto from './dto/update-movie.dto.js';
 import {RequestQuery} from '../../types/request-query.js';
@@ -17,6 +15,7 @@ import CommentResponse from '../comment/response/comment.response.js';
 import {CommentServiceInterface} from '../comment/comment-service.interface.js';
 import {ValidateObjectIdMiddleware} from '../../common/middlewares/validate-objectid.middleware.js';
 import {ValidateDtoMiddleware} from '../../common/middlewares/validate-dto.middleware.js';
+import {DocumentExistsMiddleware} from '../../common/middlewares/document-exists.middleware.js';
 
 
 type ParamsGetMovie = {
@@ -45,13 +44,17 @@ export default class MovieController extends Controller {
       path: '/:movieId',
       method: HttpMethod.Get,
       handler: this.show,
-      middlewares: [new ValidateObjectIdMiddleware('movieId')]
+      middlewares: [
+        new ValidateObjectIdMiddleware('movieId'),
+        new DocumentExistsMiddleware(this.movieService, 'Movie', 'movieId')
+      ]
     });
     this.addRoute({
       path: '/:movieId',
       method: HttpMethod.Delete,
       handler: this.delete,
-      middlewares: [new ValidateObjectIdMiddleware('movieId')]
+      middlewares: [new ValidateObjectIdMiddleware('movieId'),
+        new DocumentExistsMiddleware(this.movieService, 'Movie', 'movieId')]
     });
     this.addRoute({
       path: '/:movieId',
@@ -59,20 +62,24 @@ export default class MovieController extends Controller {
       handler: this.update,
       middlewares: [
         new ValidateObjectIdMiddleware('movieId'),
-        new ValidateDtoMiddleware(UpdateMovieDto)
+        new ValidateDtoMiddleware(UpdateMovieDto),
+        new DocumentExistsMiddleware(this.movieService, 'Movie', 'movieId')
       ]
     });
     this.addRoute({
       path: '/:movieId/comments',
       method: HttpMethod.Get,
       handler: this.getComments,
-      middlewares: [new ValidateObjectIdMiddleware('movieId')]
+      middlewares: [
+        new ValidateObjectIdMiddleware('movieId'),
+        new DocumentExistsMiddleware(this.movieService, 'Movie', 'movieId')
+      ]
     });
   }
 
   public async index({query}: Request<unknown, unknown, unknown, RequestQuery>, res: Response) : Promise<void>{
     const movies = query.genre
-      ? await  this.movieService.findByGenre(query.genre, query.limit)
+      ? await this.movieService.findByGenre(query.genre, query.limit)
       : await this.movieService.find(query.limit);
     this.ok(res, fillDTO(MovieResponse, movies));
   }
@@ -92,15 +99,6 @@ export default class MovieController extends Controller {
   ): Promise<void> {
     const {movieId} = params;
     const movie = await this.movieService.findById(movieId);
-
-    if (!movie) {
-      throw new HttpError(
-        StatusCodes.NOT_FOUND,
-        `Movie with id ${movieId} not found.`,
-        'MovieController'
-      );
-    }
-
     this.ok(res, fillDTO(MovieResponse, movie));
   }
 
@@ -110,15 +108,6 @@ export default class MovieController extends Controller {
   ): Promise<void> {
     const {movieId} = params;
     const movie = await this.movieService.deleteById(movieId);
-
-    if (!movie) {
-      throw new HttpError(
-        StatusCodes.NOT_FOUND,
-        `Movie with id ${movieId} not found.`,
-        'MovieController'
-      );
-    }
-
     this.noContent(res, movie);
   }
 
@@ -127,15 +116,6 @@ export default class MovieController extends Controller {
     res: Response
   ): Promise<void> {
     const updateMovie = await this.movieService.updateById(params.movieId, body);
-
-    if (!updateMovie) {
-      throw new HttpError(
-        StatusCodes.NOT_FOUND,
-        `Movie with id ${params.movieId} not found.`,
-        'MovieController'
-      );
-    }
-
     this.ok(res, fillDTO(MovieResponse, updateMovie));
   }
 
@@ -143,14 +123,6 @@ export default class MovieController extends Controller {
     {params}: Request<core.ParamsDictionary | ParamsGetMovie, object, object>,
     res: Response
   ): Promise<void> {
-    if (!await this.movieService.exists(params.movieId)) {
-      throw new HttpError(
-        StatusCodes.NOT_FOUND,
-        `Movie with id ${params.movieId} not found.`,
-        'MovieController'
-      );
-    }
-
     const comments = await this.commentService.findByMovieId(params.movieId);
     this.ok(res, fillDTO(CommentResponse, comments));
   }
