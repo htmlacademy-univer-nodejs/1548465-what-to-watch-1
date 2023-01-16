@@ -4,14 +4,15 @@ import validator from 'convict-format-with-validator';
 convict.addFormats(validator);
 
 export type ConfigSchema = {
-  PORT: number;
-  SALT: string;
-  DB_HOST: string;
-  DB_USER: string;
-  DB_PASSWORD: string;
-  DB_PORT: number;
-  DB_NAME: string;
-  UPLOAD_DIRECTORY: string
+  PORT: number,
+  SALT: string,
+  DB_HOST: string,
+  DB_USER: string,
+  DB_PASSWORD: string,
+  DB_PORT: number,
+  DB_NAME: string,
+  UPLOAD_DIRECTORY: string,
+  JWT_SECRET: string,
 }
 
 export const configSchema = convict<ConfigSchema>({
@@ -50,7 +51,7 @@ export const configSchema = convict<ConfigSchema>({
     doc: 'Port to connect to the database (MongoDB)',
     format: 'port',
     env: 'DB_PORT',
-    default: 27017,
+    default: 27018,
   },
   DB_NAME: {
     doc: 'Database name (MongoDB)',
@@ -62,6 +63,12 @@ export const configSchema = convict<ConfigSchema>({
     doc: 'Directory for upload files',
     format: String,
     env: 'UPLOAD_DIRECTORY',
+    default: null
+  },
+  JWT_SECRET: {
+    doc: 'Secret for sign JWT',
+    format: String,
+    env: 'JWT_SECRET',
     default: null
   },
 });

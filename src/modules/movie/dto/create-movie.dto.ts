@@ -4,7 +4,6 @@ import {
   IsDateString,
   IsEnum,
   IsInt,
-  IsMongoId,
   IsNumber, IsString,
   MaxLength,
   Min,
@@ -53,7 +52,6 @@ export default class CreateMovieDto {
   @IsInt()
   public commentsCount!: number;
 
-  @IsMongoId({message: 'userId field must be valid an id'})
   public userId!: string;
 
   @IsString()
