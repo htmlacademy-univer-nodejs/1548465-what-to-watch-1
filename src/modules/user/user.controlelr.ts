@@ -142,7 +142,7 @@ export default class UserController extends Controller {
   }
 
   public async addToWatch({body}: Request<Record<string, unknown>,
-    Record<string, unknown>, {userId: string, movieId: string}>, _res: Response): Promise<void> {
+    Record<string, unknown>, { userId: string, movieId: string }>, _res: Response): Promise<void> {
     await this.userService.addToWatch(body.movieId, body.userId);
     this.noContent(_res, {message: 'Фильм добавлен в список "К просмотру".'});
   }

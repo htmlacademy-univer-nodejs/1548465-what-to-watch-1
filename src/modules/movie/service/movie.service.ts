@@ -13,7 +13,8 @@ export default class MovieService implements MovieServiceInterface {
   constructor(
     @inject(Component.LoggerInterface) private readonly logger: LoggerInterface,
     @inject(Component.MovieModel) private readonly movieModel: types.ModelType<MovieEntity>
-  ) {}
+  ) {
+  }
 
   public async create(dto: CreateMovieDto): Promise<DocumentType<MovieEntity>> {
     const result = await this.movieModel.create(dto);
@@ -31,7 +32,7 @@ export default class MovieService implements MovieServiceInterface {
   public async find(limit?: number): Promise<DocumentType<MovieEntity>[]> {
     const movieListCount = limit ?? MAX_MOVIES_COUNT;
     return this.movieModel
-      .find({}, {},{limit: movieListCount})
+      .find({}, {}, {limit: movieListCount})
       .populate('userId')
       .exec();
   }
@@ -63,9 +64,11 @@ export default class MovieService implements MovieServiceInterface {
 
   public async incrementCommentsCount(movieId: string): Promise<DocumentType<MovieEntity> | null> {
     return this.movieModel
-      .findByIdAndUpdate(movieId, {'$inc': {
-        commentsCount: 1,
-      }})
+      .findByIdAndUpdate(movieId, {
+        '$inc': {
+          commentsCount: 1,
+        }
+      })
       .exec();
   }
 

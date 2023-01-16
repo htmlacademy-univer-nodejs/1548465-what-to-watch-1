@@ -18,7 +18,7 @@ export default class CommentController extends Controller {
   constructor(
     @inject(Component.LoggerInterface) logger: LoggerInterface,
     @inject(Component.CommentServiceInterface) private readonly commentService: CommentServiceInterface,
-    @inject(Component.MovieServiceInterface) private  readonly movieService: MovieService,
+    @inject(Component.MovieServiceInterface) private readonly movieService: MovieService,
   ) {
     super(logger);
 

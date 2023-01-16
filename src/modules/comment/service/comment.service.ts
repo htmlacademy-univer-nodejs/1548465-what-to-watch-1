@@ -9,7 +9,8 @@ import CreateCommentDto from '../dto/create-comment.dto.js';
 export default class CommentService implements CommentServiceInterface {
   constructor(
     @inject(Component.CommentModel) private readonly commentModel: types.ModelType<CommentEntity>
-  ) {}
+  ) {
+  }
 
   public async create(dto: CreateCommentDto): Promise<DocumentType<CommentEntity>> {
     const comment = await this.commentModel.create(dto);

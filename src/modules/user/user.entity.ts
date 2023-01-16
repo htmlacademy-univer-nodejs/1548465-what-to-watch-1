@@ -4,7 +4,8 @@ import {createSHA256} from '../../utils/common.js';
 
 const {prop, modelOptions} = typegoose;
 
-export interface UserEntity extends defaultClasses.Base {}
+export interface UserEntity extends defaultClasses.Base {
+}
 
 @modelOptions({
   schemaOptions: {

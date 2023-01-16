@@ -46,4 +46,5 @@ applicationContainer.bind<ControllerInterface>(Component.CommentController).to(C
 applicationContainer.bind<ExceptionFilterInterface>(Component.ExceptionFilterInterface).to(ExceptionFilter).inSingletonScope();
 
 const application = applicationContainer.get<Application>(Component.Application);
+
 await application.init();
