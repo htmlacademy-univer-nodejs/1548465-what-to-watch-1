@@ -45,9 +45,10 @@ export const createErrorObject = (message: string) => ({
   error: message,
 });
 
-export const createJWT = async (algoritm: string, jwtSecret: string, payload: object): Promise<string> =>
-  new jose.SignJWT({...payload})
-    .setProtectedHeader({ alg: algoritm})
+export const createJWT = async (algorithm: string, jwtSecret: string, payload: object): Promise<string> => {
+  return new jose.SignJWT({...payload})
+    .setProtectedHeader({alg: algorithm})
     .setIssuedAt()
     .setExpirationTime('2d')
     .sign(crypto.createSecretKey(jwtSecret, 'utf-8'));
+};

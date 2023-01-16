@@ -78,10 +78,10 @@ POST http://localhost:4001/users/register HTTP/1.1
 Content-Type: application/json
 
 {
-  "name": "Igor",
-  "email": "igor@kinopoisk.ru",
-  "avatarPath": "igor.png",
-  "password": "111igor111"
+  "name": "Neptun",
+  "email": "neptun@neptun.ru",
+  "avatarPath": "neptun.png",
+  "password": "1neptun1"
 }
 
 ###
@@ -92,8 +92,8 @@ POST http://localhost:4001/users/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "igor@kinopoisk.ru",
-  "password": "111igor111"
+  "email": "neptun@neptun.ru",
+  "password": "1neptun1"
 }
 
 ###

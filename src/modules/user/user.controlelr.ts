@@ -105,6 +105,8 @@ export default class UserController extends Controller {
       { email: user.email, id: user.id}
     );
 
+    console.log('I"m here');
+
     this.ok(res, fillDTO(LoggedUserResponse, {email: user.email, token}));
   }
 
