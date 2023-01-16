@@ -16,5 +16,5 @@ export default class CreateUserDto {
   @Length(6, 12, {message: 'Min length for password is 6, max is 12'})
   public password!: string;
 
-  public filmsToWatch: string[] = [];
+  public toWatchMovies: string[] = [];
 }
