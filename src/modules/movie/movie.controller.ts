@@ -57,7 +57,10 @@ export default class MovieController extends Controller {
       path: '/:movieId',
       method: HttpMethod.Patch,
       handler: this.update,
-      middlewares: [new ValidateObjectIdMiddleware('movieId')]
+      middlewares: [
+        new ValidateObjectIdMiddleware('movieId'),
+        new ValidateDtoMiddleware(UpdateMovieDto)
+      ]
     });
     this.addRoute({
       path: '/:movieId/comments',
