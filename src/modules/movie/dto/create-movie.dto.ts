@@ -38,7 +38,7 @@ export default class CreateMovieDto {
   @IsString()
   public video!: string;
 
-  @IsArray()
+  @IsArray({message: 'Field actors must be an array'})
   public actors!: string[];
 
   @IsString()
