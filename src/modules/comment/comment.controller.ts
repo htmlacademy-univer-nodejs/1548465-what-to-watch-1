@@ -12,6 +12,7 @@ import {fillDTO} from '../../utils/common.js';
 import CommentResponse from './response/comment.response.js';
 import MovieService from '../movie/movie.service.js';
 import {ValidateDtoMiddleware} from '../../common/middlewares/validate-dto.middleware.js';
+import {PrivateRouteMiddleware} from '../../common/middlewares/private-route.middleware.js';
 
 export default class CommentController extends Controller {
   constructor(
@@ -27,7 +28,8 @@ export default class CommentController extends Controller {
       method: HttpMethod.Post,
       handler: this.create,
       middlewares: [
-        new ValidateDtoMiddleware(CreateCommentDto),
+        new PrivateRouteMiddleware(),
+        new ValidateDtoMiddleware(CreateCommentDto)
       ]
     });
   }
