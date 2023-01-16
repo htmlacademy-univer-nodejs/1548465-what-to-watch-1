@@ -83,15 +83,6 @@ export default class MovieController extends Controller {
         new DocumentExistsMiddleware(this.movieService, 'Movie', 'movieId')
       ]
     });
-    this.addRoute({
-      path: '/:movieId/comments',
-      method: HttpMethod.Get,
-      handler: this.getComments,
-      middlewares: [
-        new ValidateObjectIdMiddleware('movieId'),
-        new DocumentExistsMiddleware(this.movieService, 'Movie', 'movieId')
-      ]
-    });
   }
 
   public async index({query}: Request<unknown, unknown, unknown, MovieRequestQuery>, res: Response): Promise<void> {
