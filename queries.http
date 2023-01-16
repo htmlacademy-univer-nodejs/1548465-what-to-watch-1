@@ -67,7 +67,7 @@ Content-Type: application/json
 
 ## Получить фильмы по жанру
 
-GET http://localhost:4001/movies?genre=drama HTTP/1.1
+GET http://localhost:4001/movies?genre=drama&limit=1 HTTP/1.1
 
 ###
 
