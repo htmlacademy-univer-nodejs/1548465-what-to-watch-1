@@ -34,7 +34,7 @@ export default class MovieController extends Controller {
 
     this.logger.info('Register routes for MovieController...');
 
-    this.addRoute({path: '/:limit?', method: HttpMethod.Get, handler: this.index});
+    this.addRoute({path: '/', method: HttpMethod.Get, handler: this.index});
     this.addRoute({
       path: '/',
       method: HttpMethod.Post,
@@ -68,11 +68,12 @@ export default class MovieController extends Controller {
       handler: this.getComments,
       middlewares: [new ValidateObjectIdMiddleware('movieId')]
     });
-    //this.addRoute({path: '/:limit?&:genre?', method: HttpMethod.Get, handler: this.getMoviesByGenre});
   }
 
-  public async index(_req: Request, res: Response) {
-    const movies = await this.movieService.find();
+  public async index({query}: Request<unknown, unknown, unknown, RequestQuery>, res: Response) : Promise<void>{
+    const movies = query.genre
+      ? await  this.movieService.findByGenre(query.genre, query.limit)
+      : await this.movieService.find(query.limit);
     this.ok(res, fillDTO(MovieResponse, movies));
   }
 
@@ -136,14 +137,6 @@ export default class MovieController extends Controller {
     }
 
     this.ok(res, fillDTO(MovieResponse, updateMovie));
-  }
-
-  public async getMoviesByGenre(
-    {query}: Request<core.ParamsDictionary, unknown, unknown, RequestQuery>,
-    res: Response
-  ):Promise<void> {
-    const movies = await this.movieService.findByGenre(query.genre, query.limit);
-    this.ok(res, fillDTO(MovieResponse, movies));
   }
 
   public async getComments(
