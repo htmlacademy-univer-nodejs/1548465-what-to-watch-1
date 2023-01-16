@@ -24,7 +24,7 @@ export default class MovieService implements MovieServiceInterface {
   public findById(movieId: string): Promise<DocumentType<MovieEntity> | null> {
     return this.movieModel
       .findById(movieId)
-      .populate(['userId'])
+      .populate('userId')
       .exec();
   }
 
@@ -32,7 +32,7 @@ export default class MovieService implements MovieServiceInterface {
     const movieListCount = limit ?? MAX_MOVIES_COUNT;
     return this.movieModel
       .find({}, {},{limit: movieListCount})
-      .populate(['userId'])
+      .populate('userId')
       .exec();
   }
 
@@ -45,14 +45,14 @@ export default class MovieService implements MovieServiceInterface {
   public async updateById(movieId: string, dto: UpdateMovieDto): Promise<DocumentType<MovieEntity> | null> {
     return this.movieModel
       .findByIdAndUpdate(movieId, dto, {new: true})
-      .populate(['userId'])
+      .populate('userId')
       .exec();
   }
 
   public async findByGenre(genre: string, limit?: number): Promise<DocumentType<MovieEntity>[]> {
     return this.movieModel
-      .find({genre: genre}, {}, {limit})
-      .populate(['userId'])
+      .find({genre}, {}, {limit})
+      .populate('userId')
       .exec();
   }
 
@@ -64,8 +64,9 @@ export default class MovieService implements MovieServiceInterface {
   public async incrementCommentsCount(movieId: string): Promise<DocumentType<MovieEntity> | null> {
     return this.movieModel
       .findByIdAndUpdate(movieId, {'$inc': {
-        commentCount: 1,
-      }}).exec();
+        commentsCount: 1,
+      }})
+      .exec();
   }
 
   public async updateMovieRating(movieId: string, newRating: number): Promise<DocumentType<MovieEntity> | null> {
@@ -74,5 +75,9 @@ export default class MovieService implements MovieServiceInterface {
     const ratingsCount = movie?.commentsCount ?? 0;
     const actualRating = (newRating + oldRating * ratingsCount) / (ratingsCount + 1);
     return this.updateById(movieId, {rating: actualRating});
+  }
+
+  public async findPromo(): Promise<DocumentType<MovieEntity> | null> {
+    return this.movieModel.findOne({isPromo: true}).populate('userId').exec();
   }
 }

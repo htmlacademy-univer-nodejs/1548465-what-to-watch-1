@@ -62,4 +62,6 @@ export default class CreateMovieDto {
 
   @IsString()
   public backgroundColor!: string;
+
+  public isPromo?: boolean;
 }

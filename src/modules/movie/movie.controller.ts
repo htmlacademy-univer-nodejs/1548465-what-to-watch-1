@@ -35,6 +35,7 @@ export default class MovieController extends Controller {
     this.logger.info('Register routes for MovieController...');
 
     this.addRoute({path: '/', method: HttpMethod.Get, handler: this.index});
+    this.addRoute({path: '/promo', method: HttpMethod.Get, handler: this.showPromo});
     this.addRoute({
       path: '/',
       method: HttpMethod.Post,
@@ -82,9 +83,18 @@ export default class MovieController extends Controller {
         new DocumentExistsMiddleware(this.movieService, 'Movie', 'movieId')
       ]
     });
+    this.addRoute({
+      path: '/:movieId/comments',
+      method: HttpMethod.Get,
+      handler: this.getComments,
+      middlewares: [
+        new ValidateObjectIdMiddleware('movieId'),
+        new DocumentExistsMiddleware(this.movieService, 'Movie', 'movieId')
+      ]
+    });
   }
 
-  public async index({query}: Request<unknown, unknown, unknown, MovieRequestQuery>, res: Response) : Promise<void>{
+  public async index({query}: Request<unknown, unknown, unknown, MovieRequestQuery>, res: Response): Promise<void> {
     const movies = query.genre
       ? await this.movieService.findByGenre(query.genre, query.limit)
       : await this.movieService.find(query.limit);
@@ -133,5 +143,10 @@ export default class MovieController extends Controller {
   ): Promise<void> {
     const comments = await this.commentService.findByMovieId(params.movieId);
     this.ok(res, fillDTO(CommentResponse, comments));
+  }
+
+  public async showPromo(_: Request, res: Response): Promise<void> {
+    const result = await this.movieService.findPromo();
+    this.ok(res, fillDTO(MovieResponse, result));
   }
 }

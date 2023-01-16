@@ -31,14 +31,15 @@ export default class ImportCommand implements CliCommandInterface {
 
     this.logger = new ConsoleLoggerService();
     this.movieService = new MovieService(this.logger, MovieModel);
-    this.userService = new UserService(this.logger, UserModel);
+    this.userService = new UserService(this.logger, UserModel, MovieModel);
     this.databaseService = new DatabaseService(this.logger);
   }
 
   private async saveMovie(movie: Movie) {
     const user = await this.userService.findOrCreate({
       ...movie.user,
-      password: DEFAULT_USER_PASSWORD
+      password: DEFAULT_USER_PASSWORD,
+      filmsToWatch: []
     }, this.salt);
 
     await this.movieService.create({

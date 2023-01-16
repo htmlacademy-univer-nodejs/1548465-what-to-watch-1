@@ -14,5 +14,6 @@ export interface MovieServiceInterface extends DocumentExistsInterface {
   findByGenre(genre: string, limit?: number): Promise<DocumentType<MovieEntity>[]>;
   incrementCommentsCount(movieId: string): Promise<DocumentType<MovieEntity> | null>;
   updateMovieRating(movieId: string, newRating: number): Promise<DocumentType<MovieEntity> | null>;
+  findPromo(): Promise<DocumentType<MovieEntity> | null>;
   exists(documentId: string): Promise<boolean>;
 }
