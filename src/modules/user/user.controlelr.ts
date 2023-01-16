@@ -2,10 +2,10 @@ import {Controller} from '../../common/controller/controller.js';
 import {inject, injectable} from 'inversify';
 import {Component} from '../../types/component.types.js';
 import {LoggerInterface} from '../../common/logger/logger.interface.js';
-import {HttpMethod} from '../../types/http-method.enum.js';
+import {HttpMethod} from '../../types/enums/http-method.enum.js';
 import {Request, Response} from 'express';
 import CreateUserDto from './dto/create-user.dto.js';
-import {UserServiceInterface} from './user-service.interface.js';
+import {UserServiceInterface} from './service/user-service.interface.js';
 import HttpError from '../../common/errors/http-error.js';
 import {StatusCodes} from 'http-status-codes';
 import {createJWT, fillDTO} from '../../utils/common.js';
@@ -17,6 +17,8 @@ import {ValidateObjectIdMiddleware} from '../../common/middlewares/validate-obje
 import {UploadFileMiddleware} from '../../common/middlewares/upload-file.middleware.js';
 import LoggedUserResponse from './response/logged-user.response.js';
 import {JWT_ALGORITM} from './user.constant.js';
+import {PrivateRouteMiddleware} from '../../common/middlewares/private-route.middleware.js';
+import {MovieResponse} from '../movie/response/movie.response.js';
 
 @injectable()
 export default class UserController extends Controller {
@@ -43,6 +45,12 @@ export default class UserController extends Controller {
     });
 
     this.addRoute({
+      path: '/login',
+      method: HttpMethod.Get,
+      handler: this.checkAuthenticate
+    });
+
+    this.addRoute({
       path: '/:userId/avatar',
       method: HttpMethod.Post,
       handler: this.uploadAvatar,
@@ -53,9 +61,22 @@ export default class UserController extends Controller {
     });
 
     this.addRoute({
-      path: '/login',
+      path: '/to_watch',
       method: HttpMethod.Get,
-      handler: this.checkAuthenticate
+      handler: this.getToWatch,
+      middlewares: [new PrivateRouteMiddleware()]
+    });
+    this.addRoute({
+      path: '/to_watch',
+      method: HttpMethod.Post,
+      handler: this.addToWatch,
+      middlewares: [new PrivateRouteMiddleware()]
+    });
+    this.addRoute({
+      path: '/to_watch',
+      method: HttpMethod.Delete,
+      handler: this.deleteToWatch,
+      middlewares: [new PrivateRouteMiddleware()]
     });
   }
 
@@ -102,17 +123,33 @@ export default class UserController extends Controller {
     const token = await createJWT(
       JWT_ALGORITM,
       this.configService.get('JWT_SECRET'),
-      { email: user.email, id: user.id}
+      {email: user.email, id: user.id}
     );
 
-    console.log('I"m here');
-
-    this.ok(res, fillDTO(LoggedUserResponse, {email: user.email, token}));
+    this.ok(res, fillDTO(LoggedUserResponse, {token}));
   }
 
   public async uploadAvatar(req: Request, res: Response) {
     this.created(res, {
       filepath: req.file?.path
     });
+  }
+
+  public async getToWatch(req: Request<Record<string, unknown>, Record<string, unknown>>, _res: Response): Promise<void> {
+    const {user} = req;
+    const result = await this.userService.findToWatch(user.id);
+    this.ok(_res, fillDTO(MovieResponse, result));
+  }
+
+  public async addToWatch({body}: Request<Record<string, unknown>,
+    Record<string, unknown>, { userId: string, movieId: string }>, _res: Response): Promise<void> {
+    await this.userService.addToWatch(body.movieId, body.userId);
+    this.noContent(_res, {message: 'Фильм добавлен в список "К просмотру".'});
+  }
+
+  public async deleteToWatch(req: Request<Record<string, unknown>, Record<string, unknown>, { movieId: string }>, _res: Response): Promise<void> {
+    const {body, user} = req;
+    await this.userService.deleteToWatch(body.movieId, user.id);
+    this.noContent(_res, {message: 'Успешно. Фильм удален из списка "К просмотру".'});
   }
 }

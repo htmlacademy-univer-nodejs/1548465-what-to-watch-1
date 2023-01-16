@@ -16,7 +16,8 @@
     "compile": "tsc -p tsconfig.json",
     "clean": "rimraf dist",
     "ts": "ts-node",
-    "mock:server": "json-server ./mocks/mock-server-data.json --port 3123"
+    "mock:server": "json-server ./mocks/mock-server-data.json --port 3123",
+    "cli": "npm run ts ./src/cli.ts"
   },
   "devDependencies": {
     "@types/mime-types": "^2.1.1",
@@ -39,12 +40,14 @@
     "@typegoose/typegoose": "9.13.2",
     "@types/convict": "6.1.1",
     "@types/convict-format-with-validator": "6.0.2",
+    "@types/cors": "2.8.13",
     "@types/express": "4.17.14",
     "chalk": "5.2.0",
     "class-transformer": "0.5.1",
     "class-validator": "0.14.0",
     "convict": "6.2.4",
     "convict-format-with-validator": "6.2.0",
+    "cors": "2.8.5",
     "dayjs": "1.11.7",
     "dotenv": "16.0.3",
     "express": "4.18.2",

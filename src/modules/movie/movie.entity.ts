@@ -1,10 +1,11 @@
 import typegoose, {defaultClasses, getModelForClass, Ref} from '@typegoose/typegoose';
-import {Genre} from '../../types/genre-type.enum.js';
+import {Genre} from '../../types/enums/genre-type.enum.js';
 import {UserEntity} from '../user/user.entity.js';
 
 const {prop, modelOptions} = typegoose;
 
-export interface MovieEntity extends defaultClasses.Base {}
+export interface MovieEntity extends defaultClasses.Base {
+}
 
 @modelOptions({
   schemaOptions: {
@@ -16,10 +17,10 @@ export class MovieEntity extends defaultClasses.TimeStamps {
   @prop({trim: true, required: true})
   public title!: string;
 
-  @prop({trim: true})
+  @prop({trim: true, required: true, default: ''})
   public description!: string;
 
-  @prop()
+  @prop({required: true, default: ''})
   public publicationDate!: Date;
 
   @prop({
@@ -28,28 +29,28 @@ export class MovieEntity extends defaultClasses.TimeStamps {
   })
   public genre!: Genre;
 
-  @prop()
+  @prop({required: true, default: ''})
   public releaseYear!: number;
 
-  @prop()
+  @prop({required: true, default: ''})
   public rating!: number;
 
-  @prop()
+  @prop({required: true, default: ''})
   public preview!: string;
 
-  @prop()
+  @prop({required: true, default: ''})
   public video!: string;
 
-  @prop()
+  @prop({required: true, default: ''})
   public actors!: string[];
 
-  @prop()
+  @prop({required: true, default: ''})
   public director!: string;
 
-  @prop()
+  @prop({required: true, default: ''})
   public durationInMinutes!: number;
 
-  @prop()
+  @prop({required: true, default: ''})
   public commentsCount!: number;
 
   @prop({
@@ -58,14 +59,17 @@ export class MovieEntity extends defaultClasses.TimeStamps {
   })
   public userId!: Ref<UserEntity>;
 
-  @prop()
+  @prop({required: true, default: ''})
   public poster!: string;
 
-  @prop()
+  @prop({required: true, default: ''})
   public backgroundImage!: string;
 
-  @prop()
+  @prop({required: true, default: ''})
   public backgroundColor!: string;
+
+  @prop({required: true, default: false})
+  public isPromo?: boolean;
 
 }
 

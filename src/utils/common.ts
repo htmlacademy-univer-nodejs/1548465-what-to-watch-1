@@ -1,8 +1,10 @@
 import crypto from 'crypto';
-import {Movie} from '../types/movie.type.js';
-import {Genre} from '../types/genre-type.enum.js';
+import {Movie} from '../types/entities/movie.type.js';
+import {Genre} from '../types/enums/genre-type.enum.js';
 import {ClassConstructor, plainToInstance} from 'class-transformer';
 import * as jose from 'jose';
+// eslint-disable-next-line node/prefer-global/text-encoder
+import {TextEncoder} from 'util';
 
 export const createMovie = (row: string) => {
   const tokens = row.replace('\n', '').split('\t');
@@ -46,9 +48,11 @@ export const createErrorObject = (message: string) => ({
 });
 
 export const createJWT = async (algorithm: string, jwtSecret: string, payload: object): Promise<string> => {
+  const encoder = new TextEncoder();
+  const secretKey = encoder.encode(jwtSecret);
   return new jose.SignJWT({...payload})
     .setProtectedHeader({alg: algorithm})
     .setIssuedAt()
     .setExpirationTime('2d')
-    .sign(crypto.createSecretKey(jwtSecret, 'utf-8'));
+    .sign(secretKey);
 };

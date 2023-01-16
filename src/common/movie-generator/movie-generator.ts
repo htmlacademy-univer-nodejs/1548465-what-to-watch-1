@@ -2,7 +2,7 @@ import {MovieGeneratorInterface} from './movie-generator.interface.js';
 import {MockData} from '../../types/mock-data.type.js';
 import {generateRandomValue, getRandomItem, getRandomItems} from '../../utils/random.js';
 import dayjs from 'dayjs';
-import {GenresList} from '../../types/genre-type.enum.js';
+import {GenresList} from '../../types/enums/genre-type.enum.js';
 
 const FIRST_WEEK_DAY = 1;
 const LAST_WEEK_DAY = 7;

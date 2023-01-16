@@ -21,5 +21,4 @@ export default class DatabaseService implements DatabaseInterface{
     await mongoose.disconnect();
     this.logger.info('Database connection closed.');
   }
-
 }

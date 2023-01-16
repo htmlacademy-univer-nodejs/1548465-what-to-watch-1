@@ -1,15 +1,15 @@
 import {CliCommandInterface} from './cli-command.interface.js';
 import TsvFileReader from '../common/file-reader/tsv-file-reader.js';
 import {createMovie, getErrorMessage} from '../utils/common.js';
-import {Movie} from '../types/movie.type.js';
-import {UserServiceInterface} from '../modules/user/user-service.interface.js';
-import {MovieServiceInterface} from '../modules/movie/movie-service.interface.js';
+import {Movie} from '../types/entities/movie.type.js';
+import {UserServiceInterface} from '../modules/user/service/user-service.interface.js';
+import {MovieServiceInterface} from '../modules/movie/service/movie-service.interface.js';
 import {DatabaseInterface} from '../common/db-client/database.interface.js';
 import {LoggerInterface} from '../common/logger/logger.interface.js';
 import ConsoleLoggerService from '../common/logger/console-logger.service.js';
-import MovieService from '../modules/movie/movie.service.js';
+import MovieService from '../modules/movie/service/movie.service.js';
 import {MovieModel} from '../modules/movie/movie.entity.js';
-import UserService from '../modules/user/user.service.js';
+import UserService from '../modules/user/service/user.service.js';
 import {UserModel} from '../modules/user/user.entity.js';
 import DatabaseService from '../common/db-client/database.service.js';
 import {getURI} from '../utils/db.js';
@@ -31,14 +31,15 @@ export default class ImportCommand implements CliCommandInterface {
 
     this.logger = new ConsoleLoggerService();
     this.movieService = new MovieService(this.logger, MovieModel);
-    this.userService = new UserService(this.logger, UserModel);
+    this.userService = new UserService(this.logger, UserModel, MovieModel);
     this.databaseService = new DatabaseService(this.logger);
   }
 
   private async saveMovie(movie: Movie) {
     const user = await this.userService.findOrCreate({
       ...movie.user,
-      password: DEFAULT_USER_PASSWORD
+      password: DEFAULT_USER_PASSWORD,
+      toWatchMovies: []
     }, this.salt);
 
     await this.movieService.create({

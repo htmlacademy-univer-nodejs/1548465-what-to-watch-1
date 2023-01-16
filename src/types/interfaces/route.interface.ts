@@ -1,4 +1,4 @@
-import {HttpMethod} from './http-method.enum.js';
+import {HttpMethod} from '../enums/http-method.enum.js';
 import {NextFunction, Request, Response} from 'express';
 import {MiddlewareInterface} from './middleware.interface.js';
 

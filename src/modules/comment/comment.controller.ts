@@ -4,13 +4,13 @@ import {StatusCodes} from 'http-status-codes';
 import {Controller} from '../../common/controller/controller.js';
 import {Component} from '../../types/component.types.js';
 import {LoggerInterface} from '../../common/logger/logger.interface.js';
-import {CommentServiceInterface} from './comment-service.interface.js';
+import {CommentServiceInterface} from './service/comment-service.interface.js';
 import CreateCommentDto from './dto/create-comment.dto.js';
 import HttpError from '../../common/errors/http-error.js';
-import {HttpMethod} from '../../types/http-method.enum.js';
+import {HttpMethod} from '../../types/enums/http-method.enum.js';
 import {fillDTO} from '../../utils/common.js';
 import CommentResponse from './response/comment.response.js';
-import MovieService from '../movie/movie.service.js';
+import MovieService from '../movie/service/movie.service.js';
 import {ValidateDtoMiddleware} from '../../common/middlewares/validate-dto.middleware.js';
 import {PrivateRouteMiddleware} from '../../common/middlewares/private-route.middleware.js';
 
@@ -18,7 +18,7 @@ export default class CommentController extends Controller {
   constructor(
     @inject(Component.LoggerInterface) logger: LoggerInterface,
     @inject(Component.CommentServiceInterface) private readonly commentService: CommentServiceInterface,
-    @inject(Component.MovieServiceInterface) private  readonly movieService: MovieService,
+    @inject(Component.MovieServiceInterface) private readonly movieService: MovieService,
   ) {
     super(logger);
 

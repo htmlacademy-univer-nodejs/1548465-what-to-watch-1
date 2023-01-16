@@ -3,16 +3,16 @@ import {inject, injectable} from 'inversify';
 import {Controller} from '../../common/controller/controller.js';
 import {Component} from '../../types/component.types.js';
 import {LoggerInterface} from '../../common/logger/logger.interface.js';
-import {HttpMethod} from '../../types/http-method.enum.js';
-import {MovieServiceInterface} from './movie-service.interface.js';
+import {HttpMethod} from '../../types/enums/http-method.enum.js';
+import {MovieServiceInterface} from './service/movie-service.interface.js';
 import {fillDTO} from '../../utils/common.js';
 import {MovieResponse} from './response/movie.response.js';
 import CreateMovieDto from './dto/create-movie.dto.js';
 import * as core from 'express-serve-static-core';
 import UpdateMovieDto from './dto/update-movie.dto.js';
-import {RequestQuery} from '../../types/request-query.js';
+import {MovieRequestQuery} from '../../types/movie-request-query.js';
 import CommentResponse from '../comment/response/comment.response.js';
-import {CommentServiceInterface} from '../comment/comment-service.interface.js';
+import {CommentServiceInterface} from '../comment/service/comment-service.interface.js';
 import {ValidateObjectIdMiddleware} from '../../common/middlewares/validate-objectid.middleware.js';
 import {ValidateDtoMiddleware} from '../../common/middlewares/validate-dto.middleware.js';
 import {DocumentExistsMiddleware} from '../../common/middlewares/document-exists.middleware.js';
@@ -35,6 +35,7 @@ export default class MovieController extends Controller {
     this.logger.info('Register routes for MovieController...');
 
     this.addRoute({path: '/', method: HttpMethod.Get, handler: this.index});
+    this.addRoute({path: '/promo', method: HttpMethod.Get, handler: this.showPromo});
     this.addRoute({
       path: '/',
       method: HttpMethod.Post,
@@ -84,7 +85,7 @@ export default class MovieController extends Controller {
     });
   }
 
-  public async index({query}: Request<unknown, unknown, unknown, RequestQuery>, res: Response) : Promise<void>{
+  public async index({query}: Request<unknown, unknown, unknown, MovieRequestQuery>, res: Response): Promise<void> {
     const movies = query.genre
       ? await this.movieService.findByGenre(query.genre, query.limit)
       : await this.movieService.find(query.limit);
@@ -133,5 +134,10 @@ export default class MovieController extends Controller {
   ): Promise<void> {
     const comments = await this.commentService.findByMovieId(params.movieId);
     this.ok(res, fillDTO(CommentResponse, comments));
+  }
+
+  public async showPromo(_: Request, res: Response): Promise<void> {
+    const result = await this.movieService.findPromo();
+    this.ok(res, fillDTO(MovieResponse, result));
   }
 }
