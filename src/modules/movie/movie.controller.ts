@@ -17,6 +17,9 @@ import {ValidateObjectIdMiddleware} from '../../common/middlewares/validate-obje
 import {ValidateDtoMiddleware} from '../../common/middlewares/validate-dto.middleware.js';
 import {DocumentExistsMiddleware} from '../../common/middlewares/document-exists.middleware.js';
 import {PrivateRouteMiddleware} from '../../common/middlewares/private-route.middleware.js';
+import {ConfigInterface} from '../../common/config/config.interface.js';
+import {UploadFileMiddleware} from '../../common/middlewares/upload-file.middleware.js';
+import UploadImageResponse from './response/upload-image.response.js';
 
 
 type ParamsGetMovie = {
@@ -27,10 +30,11 @@ type ParamsGetMovie = {
 export default class MovieController extends Controller {
   constructor(
     @inject(Component.LoggerInterface) logger: LoggerInterface,
+    @inject(Component.ConfigInterface) configService: ConfigInterface,
     @inject(Component.MovieServiceInterface) private readonly movieService: MovieServiceInterface,
-    @inject(Component.CommentServiceInterface) private readonly commentService: CommentServiceInterface
+    @inject(Component.CommentServiceInterface) private readonly commentService: CommentServiceInterface,
   ) {
-    super(logger);
+    super(logger, configService);
 
     this.logger.info('Register routes for MovieController...');
 
@@ -81,6 +85,16 @@ export default class MovieController extends Controller {
       middlewares: [
         new ValidateObjectIdMiddleware('movieId'),
         new DocumentExistsMiddleware(this.movieService, 'Movie', 'movieId')
+      ]
+    });
+    this.addRoute({
+      path: '/:movieId/backgroundImage',
+      method: HttpMethod.Post,
+      handler: this.uploadBackgroundImage,
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateObjectIdMiddleware('movieId'),
+        new UploadFileMiddleware(this.configService.get('UPLOAD_DIRECTORY'), 'backgroundImage'),
       ]
     });
   }
@@ -139,5 +153,12 @@ export default class MovieController extends Controller {
   public async showPromo(_: Request, res: Response): Promise<void> {
     const result = await this.movieService.findPromo();
     this.ok(res, fillDTO(MovieResponse, result));
+  }
+
+  public async uploadBackgroundImage(req: Request<core.ParamsDictionary | ParamsGetMovie>, res: Response) {
+    const {movieId} = req.params;
+    const updateDto = { backgroundImage: req.file?.filename };
+    await this.movieService.updateById(movieId, updateDto);
+    this.created(res, fillDTO(UploadImageResponse, {updateDto}));
   }
 }

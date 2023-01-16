@@ -76,6 +76,19 @@ GET http://localhost:4001/movies/promo HTTP/1.1
 
 ###
 
+## Загрузка изображения для картинки
+POST http://localhost:4001/movies HTTP/1.1
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="avatar"; filename="backgroundImage.jpg"
+Content-Type: image/png
+
+< ./static/default-avatar.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+###
+
 # Пользователи
 
 ## Регистрация пользователя
@@ -91,20 +104,10 @@ Content-Type: application/json
 
 ###
 
-## Авторизация пользователя
-POST http://localhost:4001/users/login HTTP/1.1
-Content-Type: application/json
-
-{
-  "email": "dima@yandex.ru",
-  "password": "2222222222"
-}
-
-###
-
 ## Отправка аватарки пользователю
 POST http://localhost:4001/users/63c4820a319cb08e2545cf34/avatar HTTP/1.1
-Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Type: multipart/form-data; boundary=----
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImRpbWFAeWFuZGV4LnJ1IiwiaWQiOiI2M2M1ODNmZTkyN2NhODI0YWUxNWY4YzQiLCJpYXQiOjE2NzM4ODg4MTMsImV4cCI6MTY3NDA2MTYxM30.fryk63QGeEEsPCxKXkcArXHyQVBDnhcSi_8K8oa2S-4
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
 Content-Disposition: form-data; name="avatar"; filename="screen.png"
