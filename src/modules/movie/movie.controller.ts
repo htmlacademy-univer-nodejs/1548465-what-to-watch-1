@@ -15,6 +15,7 @@ import UpdateMovieDto from './dto/update-movie.dto.js';
 import {RequestQuery} from '../../types/request-query.js';
 import CommentResponse from '../comment/response/comment.response.js';
 import {CommentServiceInterface} from '../comment/comment-service.interface.js';
+import {ValidateObjectIdMiddleware} from '../../common/middlewares/validate-objectid.middleware.js';
 
 
 type ParamsGetMovie = {
@@ -34,11 +35,31 @@ export default class MovieController extends Controller {
 
     this.addRoute({path: '/:limit?', method: HttpMethod.Get, handler: this.index});
     this.addRoute({path: '/', method: HttpMethod.Post, handler: this.create});
-    this.addRoute({path: '/:movieId', method: HttpMethod.Get, handler: this.show});
-    this.addRoute({path: '/:movieId', method: HttpMethod.Delete, handler: this.delete});
-    this.addRoute({path: '/:movieId', method: HttpMethod.Patch, handler: this.update});
+    this.addRoute({
+      path: '/:movieId',
+      method: HttpMethod.Get,
+      handler: this.show,
+      middlewares: [new ValidateObjectIdMiddleware('movieId')]
+    });
+    this.addRoute({
+      path: '/:movieId',
+      method: HttpMethod.Delete,
+      handler: this.delete,
+      middlewares: [new ValidateObjectIdMiddleware('movieId')]
+    });
+    this.addRoute({
+      path: '/:movieId',
+      method: HttpMethod.Patch,
+      handler: this.update,
+      middlewares: [new ValidateObjectIdMiddleware('movieId')]
+    });
+    this.addRoute({
+      path: '/:movieId/comments',
+      method: HttpMethod.Get,
+      handler: this.getComments,
+      middlewares: [new ValidateObjectIdMiddleware('movieId')]
+    });
     //this.addRoute({path: '/:limit?&:genre?', method: HttpMethod.Get, handler: this.getMoviesByGenre});
-    this.addRoute({path: '/:movieId/comments', method: HttpMethod.Get, handler: this.getComments});
   }
 
   public async index(_req: Request, res: Response) {
